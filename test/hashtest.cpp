@@ -185,3 +185,72 @@ TEST(Hashtest, InsertFindRemoveFind) {
     delete sh;
 }
 
+TEST(Hashtest, CollisionInsert) {
+    Hashmap<int>* ih = new Hashmap<int>();
+    ih->insert("abc", 1);
+    ih->insert("acb", 2);
+    ih->insert("bac", 3);
+    EXPECT_EQ(2, ih->find("acb"));
+    EXPECT_EQ(1, ih->find("abc"));
+    EXPECT_EQ(3, ih->find("bac"));
+    ih->remove("acb");
+    EXPECT_EQ(3, ih->find("bac"));
+    EXPECT_EQ(0, ih->find("acb"));
+    EXPECT_EQ(1, ih->find("abc"));
+    delete ih;
+
+    Hashmap<double>* dh = new Hashmap<double>();
+    dh->insert("abc", .1);
+    dh->insert("acb", .2);
+    dh->insert("bac", .3);
+    EXPECT_EQ(.2, dh->find("acb"));
+    EXPECT_EQ(.1, dh->find("abc"));
+    EXPECT_EQ(.3, dh->find("bac"));
+    dh->remove("acb");
+    EXPECT_EQ(.3, dh->find("bac"));
+    EXPECT_EQ(0, dh->find("acb"));
+    EXPECT_EQ(.1, dh->find("abc"));
+    delete dh;
+
+    Hashmap<string>* sh = new Hashmap<string>();
+    sh->insert("abc", "a");
+    sh->insert("acb", "b");
+    sh->insert("bac", "c");
+    //EXPECT_EQ("b", sh->find("acb"));
+    //EXPECT_EQ("a", sh->find("abc"));
+    //EXPECT_EQ("c", sh->find("bac"));
+    sh->remove("acb");
+    //EXPECT_EQ("c", sh->find("bac"));
+    //EXPECT_EQ(0, sh->find("acb"));
+    //EXPECT_EQ("a", sh->find("abc"));
+    delete sh;
+}
+
+TEST(Hashtest, DuplicateInsert) {
+    Hashmap<int>* ih = new Hashmap<int>();
+    ih->insert("string", 1);
+    ih->insert("string", 2);
+    ih->insert("string", 3);
+    EXPECT_EQ(3, ih->find("string"));
+    ih->remove("string");
+    EXPECT_EQ(0, ih->find("string"));
+    delete ih;
+
+    Hashmap<double>* dh = new Hashmap<double>();
+    dh->insert("string", .1);
+    dh->insert("string", .2);
+    dh->insert("string", .3);
+    //EXPECT_EQ(.3, dh->find("string"));
+    dh->remove("string");
+    //EXPECT_EQ(0, dh->find("string"));
+    delete dh;
+
+    Hashmap<string>* sh = new Hashmap<string>();
+    sh->insert("string", "a");
+    sh->insert("string", "b");
+    sh->insert("string", "c");
+    //EXPECT_EQ("c" sh->find("string"));
+    sh->remove("string");
+    //EXPECT_EQ(0, sh->find("string"));
+    delete sh;
+}
