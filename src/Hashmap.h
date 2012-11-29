@@ -10,10 +10,12 @@ using std::list;
 template <typename V>
 class Hashmap {
   private:
-    list< Entry<V> >* table;
+    list< Entry<V>* >* table[255];
+    int hash(string k);
     
   public:
     Hashmap<V>();
+    ~Hashmap<V>();
 
     void insert(string k, V v);
     V find(string k);
