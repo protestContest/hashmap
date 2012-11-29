@@ -8,7 +8,7 @@ GTEST_MAINA = $(GTEST)/make/gtest_main.a
 GTEST_INCLUDES = -I$(GTEST) -I$(GTEST)/include
 
 CPP = g++
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -Werror
 INCLUDE = -I$(SRC)
 
 hashtest: hashtest.o Hashmap.o Entry.o
