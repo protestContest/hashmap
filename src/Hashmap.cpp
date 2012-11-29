@@ -35,12 +35,21 @@ void Hashmap<V>::insert(string k, V v) {
     int keyHash = hash(k);
     assert(keyHash >= 0 && keyHash < 255);
 
+    typename list< Entry<V>* >::iterator it;
+    for (it = table[keyHash]->begin(); it != table[keyHash]->end(); ++it) {
+        if ((*it)->getKey() == k) {
+            (*it)->setValue(v);
+            return;
+        }
+    }
+
     table[keyHash]->push_back(new Entry<V>(k, v));
 }
 
 template <typename V>
 V Hashmap<V>::find(string k) {
     int keyHash = hash(k);
+    assert(keyHash >= 0 && keyHash < 255);
 
     typename list< Entry<V>* >::iterator it;
     for (it = table[keyHash]->begin(); it != table[keyHash]->end(); ++it) {
