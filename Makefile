@@ -11,20 +11,20 @@ CPP = g++
 CFLAGS = -Wall -Wextra
 INCLUDE = -I$(SRC)
 
-hashtest: hashtest.o hashmap.o entry.o
+hashtest: hashtest.o Hashmap.o Entry.o
 	$(CPP) $(CFLAGS) $(INCLUDE) -o $(BUILD)/hashtest -pthread \
-			hashtest.o hashmap.o entry.o
+			hashtest.o Hashmap.o Entry.o $(GTEST_MAINA)
 
 hashtest.o: $(TEST)/hashtest.cpp
-	$(CPP) $(CFLAGS) $(INCLUDE) -c $(TEST)/hashtest.cpp
+	$(CPP) $(CFLAGS) $(INCLUDE) $(GTEST_INCLUDES) -c $(TEST)/hashtest.cpp
 
-hashmap.o: $(SRC)/hashmap.h $(SRC)/hashmap.cpp
-	$(CPP) $(CFLAGS) $(INCLUDE) -c $(SRC)/hashmap.cpp
+Hashmap.o: $(SRC)/Hashmap.h $(SRC)/Hashmap.cpp
+	$(CPP) $(CFLAGS) $(INCLUDE) -c $(SRC)/Hashmap.cpp
 
-entry.o: $(SRC)/entry.h $(SRC)/entry.cpp
-	$(CPP) $(CFLAGS) $(INCLUDE) -c $(SRC)/entry.cpp
+Entry.o: $(SRC)/Entry.h $(SRC)/Entry.cpp
+	$(CPP) $(CFLAGS) $(INCLUDE) -c $(SRC)/Entry.cpp
 
-$(GTEST_MAINA): $(GTEST)/src/*.cc $(GTEST)/src/*.h
+$(GTEST_MAINA): $(GTEST)/src/*.cc $(GTEST)/src/*.h 
 	cd $(GTEST)/make && $(MAKE)
 
 
