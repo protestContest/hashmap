@@ -29,5 +29,6 @@ $(GTEST_MAINA): $(GTEST)/src/*.cc $(GTEST)/src/*.h
 
 
 clean:
+	cd $(GTEST)/make && $(MAKE) clean
 	rm -rf $(BUILD)/*
 	rm -rf *.o
