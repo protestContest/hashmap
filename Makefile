@@ -15,7 +15,7 @@ hashtest: hashtest.o Hashmap.o Entry.o
 	$(CPP) $(CFLAGS) $(INCLUDE) -o $(BUILD)/hashtest -pthread \
 			hashtest.o Hashmap.o Entry.o $(GTEST_MAINA)
 
-hashtest.o: $(TEST)/hashtest.cpp
+hashtest.o: $(TEST)/hashtest.cpp $(GTEST_MAINA)
 	$(CPP) $(CFLAGS) $(INCLUDE) $(GTEST_INCLUDES) -c $(TEST)/hashtest.cpp
 
 Hashmap.o: $(SRC)/Hashmap.h $(SRC)/Hashmap.cpp
