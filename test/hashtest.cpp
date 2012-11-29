@@ -37,13 +37,13 @@ TEST(Hashtest, BasicInsert) {
 TEST(Hashtest, BasicFind) {
     Hashmap<int>* ih = new Hashmap<int>();
     for (int i = 0; i < 1000; ++i) {
-        EXPECT_EQ(ih->find("string" + i), 0);
+        EXPECT_EQ(0, ih->find("string" + i));
     }
     delete ih;
 
     Hashmap<double>* dh = new Hashmap<double>();
     for (int i = 0; i < 1000; ++i) {
-        EXPECT_EQ(dh->find("string" + i), 0);
+        EXPECT_EQ(0, dh->find("string" + i));
     }
     delete dh;
 
@@ -80,10 +80,10 @@ TEST(Hashtest, InsertFind) {
         ih->insert("iftest" + i, i*3);
     }
     for (int i = 0; i < 1000; i+=2) {
-        EXPECT_EQ(ih->find("iftest" + i), i*3);
+        EXPECT_EQ(i*3, ih->find("iftest" + i));
     }
     for (int i = 1; i < 1000; i+=2) {
-        EXPECT_EQ(ih->find("iftest" + i), i*3);
+        EXPECT_EQ(i*3, ih->find("iftest" + i));
     }
     delete ih;
 
@@ -92,10 +92,10 @@ TEST(Hashtest, InsertFind) {
         dh->insert("iftest" + i, i/3);
     }
     for (int i = 0; i < 1000; i+=2) {
-        EXPECT_EQ(dh->find("iftest" + i), i/3);
+        EXPECT_EQ(i/3, dh->find("iftest" + i));
     }
     for (int i = 1; i < 1000; i+=2) {
-        EXPECT_EQ(dh->find("iftest" + i), i/3);
+        EXPECT_EQ(i/3, dh->find("iftest" + i));
     }
     delete dh;
 
@@ -118,7 +118,7 @@ TEST(Hashtest, InsertFindRemove) {
         ih->insert("ifrtest" + i, i*4);
     }
     for (int i = 0; i < 1000; ++i) {
-        EXPECT_EQ(ih->find("ifrtest" + i), i*4);
+        EXPECT_EQ(i*4, ih->find("ifrtest" + i));
     }
     for (int i = 999; i >= 0; --i) {
         ih->remove("ifrtest" + i);
@@ -130,7 +130,7 @@ TEST(Hashtest, InsertFindRemove) {
         dh->insert("ifrtest" + i, i/7);
     }
     for (int i = 0; i < 1000; ++i) {
-        EXPECT_EQ(dh->find("ifrtest" + i), i/7);
+        EXPECT_EQ(i/7, dh->find("ifrtest" + i));
     }
     for (int i = 999; i >= 0; --i) {
         dh->remove("ifrtest" + i);
@@ -156,9 +156,9 @@ TEST(Hashtest, InsertFindRemoveFind) {
         ih->insert("ifrftest" + i, i*13-100);
     }
     for (int i = 0; i < 1000; ++i) {
-        EXPECT_EQ(ih->find("ifrftest" + i), i*13-100);
+        EXPECT_EQ(i*3-100, ih->find("ifrftest" + i));
         ih->remove("ifrftest" + i);
-        EXPECT_EQ(ih->find("ifrftest" + i), 0);
+        EXPECT_EQ(0, ih->find("ifrftest" + i));
     }
     delete ih;
 
@@ -167,9 +167,9 @@ TEST(Hashtest, InsertFindRemoveFind) {
         dh->insert("ifrftest" + i, i/13-100);
     }
     for (int i = 0; i < 1000; ++i) {
-        EXPECT_EQ(dh->find("ifrftest" + i), i/13-100);
+        EXPECT_EQ(i/13-100, dh->find("ifrftest" + i));
         dh->remove("ifrftest" + i);
-        EXPECT_EQ(dh->find("ifrftest" + i), 0);
+        EXPECT_EQ(0, dh->find("ifrftest" + i));
     }
     delete dh;
 
