@@ -63,7 +63,17 @@ V Hashmap<V>::find(string k) {
 
 template <typename V>
 void Hashmap<V>::remove(string k) {
-    assert(k == k);
+    int keyHash = hash(k);
+    assert(keyHash >= 0 && keyHash < 255);
+
+    typename list< Entry<V>* >::iterator it;
+    for (it = table[keyHash]->begin(); it != table[keyHash]->end(); ++it) {
+        if ((*it)->getKey() == k) {
+            delete (*it);
+            table[keyHash]->erase(it);
+            return;
+        }
+    }
 }
 
 template class Hashmap<int>;
