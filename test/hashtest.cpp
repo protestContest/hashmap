@@ -3,6 +3,8 @@
 #include <string>
 #include <cmath>
 #include <sstream>
+#include <iostream>
+using std::cout;
 using std::string;
 using std::stringstream;
 
@@ -63,7 +65,7 @@ TEST(Hashtest, BasicFind) {
     for (int i = 0; i < 10; ++i) {
         stringstream key;
         key << "key" << i;
-        //EXPECT_EQ(0, sh->find(key.str()));
+        EXPECT_EQ(0, sh->find(key.str()));
     }
     delete sh;
 }
@@ -104,7 +106,7 @@ TEST(Hashtest, InsertFind) {
     for (int i = 0; i < 10; ++i) {
         stringstream key;
         key << "key" << i;
-        EXPECT_EQ(i*3, ih->find(key.str()));
+        EXPECT_EQ(i*3, *(ih->find(key.str())));
     }
     delete ih;
 
@@ -117,19 +119,22 @@ TEST(Hashtest, InsertFind) {
     for (int i = 0; i < 10; ++i) {
         stringstream key;
         key << "key" << i;
-        EXPECT_EQ(i/3, dh->find(key.str()));
+        EXPECT_EQ(i/3, *(dh->find(key.str())));
     }
     delete dh;
 
     Hashmap<string>* sh = new Hashmap<string>();
     for (int i = 0; i < 10; ++i) {
-        stringstream key;
+        stringstream key, val;
         key << "key" << i;
-        sh->insert(key.str(), "test" + i*3);
+        val << "val" << i;
+        sh->insert(key.str(), val.str());
     }
     for (int i = 0; i < 10; i+=2) {
-        stringstream key;
+        stringstream key, val;
         key << "key" << i;
+        val << "val" << i;
+        EXPECT_EQ(val.str(), *(sh->find(key.str())));
     }
     delete sh;
 }
@@ -144,7 +149,7 @@ TEST(Hashtest, InsertFindRemove) {
     for (int i = 0; i < 10; ++i) {
         stringstream key;
         key << "key" << i;
-        EXPECT_EQ(i*7, ih->find(key.str()));
+        EXPECT_EQ(i*7, *(ih->find(key.str())));
     }
     for (int i = 0; i < 10; ++i) {
         stringstream key, badKey;
@@ -164,24 +169,34 @@ TEST(Hashtest, InsertFindRemove) {
     for (int i = 0; i < 10; ++i) {
         stringstream key;
         key << "key" << i;
-        EXPECT_EQ(i/7, dh->find(key.str()));
+        EXPECT_EQ(i/7, *(dh->find(key.str())));
     }
     for (int i = 0; i < 10; ++i) {
-        stringstream key;
+        stringstream key, badKey;
         key << "key" << i;
+        badKey << "wrong" << i;
         dh->remove(key.str());
+        dh->remove(badKey.str());
     }
     delete dh;
 
     Hashmap<string>* sh = new Hashmap<string>();
-    for (char i = 'a'; i < 'j'; ++i) {
-        sh->insert("ifrtest " + i, i + " test");
+    for (int i = 0; i < 10; ++i) {
+        stringstream key, val;
+        key << "key" << i;
+        val << "val" << i;
+        sh->insert(key.str(), val.str());
     }
     for (int i = 0; i < 10; ++i) {
-        //EXPECT_EQ(sh->find("ifrtest" + i), i + "test");
+        stringstream key, val;
+        key << "key" << i;
+        val << "val" << i;
+        EXPECT_EQ(val.str(), *(sh->find(key.str())));
     }
     for (int i = 0; i < 10; ++i) {
-        sh->remove("ifrtest" + i);
+        stringstream key;
+        key << "key" << i;
+        sh->remove(key.str());
     }
     delete sh;
 }
@@ -196,7 +211,7 @@ TEST(Hashtest, InsertFindRemoveFind) {
     for (int i = 0; i < 10; ++i) {
         stringstream key;
         key << "key" << i;
-        EXPECT_EQ(i*13-10, ih->find(key.str()));
+        EXPECT_EQ(i*13-10, *(ih->find(key.str())));
         ih->remove(key.str());
         EXPECT_EQ(0, ih->find(key.str()));
     }
@@ -211,7 +226,7 @@ TEST(Hashtest, InsertFindRemoveFind) {
     for (int i = 0; i < 10; ++i) {
         stringstream key;
         key << "key" << i;
-        EXPECT_EQ(i/13-10, dh->find(key.str()));
+        EXPECT_EQ(i/13-10, *(dh->find(key.str())));
         dh->remove(key.str());
         EXPECT_EQ(0, dh->find(key.str()));
     }
@@ -219,12 +234,18 @@ TEST(Hashtest, InsertFindRemoveFind) {
 
     Hashmap<string>* sh = new Hashmap<string>();
     for (int i = 0; i < 10; ++i) {
-        sh->insert("ifrftest" + i, "a" + i);
+        stringstream key, val;
+        key << "key" << i;
+        val << "val" << i;
+        sh->insert(key.str(), val.str());
     }
     for (int i = 0; i < 10; ++i) {
-        //EXPECT_EQ(sh->find("ifrftest" + i), "a" + i + "b");
-        sh->remove("ifrftest" + i);
-        //EXPECT_EQ(sh->find("ifrftest" + i), 0);
+        stringstream key, val;
+        key << "key" << i;
+        val << "val" << i;
+        EXPECT_EQ(val.str(), *(sh->find(key.str())));
+        sh->remove(key.str());
+        EXPECT_EQ(0, sh->find(key.str()));
     }
     delete sh;
 }
@@ -234,39 +255,39 @@ TEST(Hashtest, CollisionInsert) {
     ih->insert("abc", 1);
     ih->insert("acb", 2);
     ih->insert("bac", 3);
-    EXPECT_EQ(2, ih->find("acb"));
-    EXPECT_EQ(1, ih->find("abc"));
-    EXPECT_EQ(3, ih->find("bac"));
+    EXPECT_EQ(2, *(ih->find("acb")));
+    EXPECT_EQ(1, *(ih->find("abc")));
+    EXPECT_EQ(3, *(ih->find("bac")));
     ih->remove("acb");
-    EXPECT_EQ(3, ih->find("bac"));
+    EXPECT_EQ(3, *(ih->find("bac")));
     EXPECT_EQ(0, ih->find("acb"));
-    EXPECT_EQ(1, ih->find("abc"));
+    EXPECT_EQ(1, *(ih->find("abc")));
     delete ih;
 
     Hashmap<double>* dh = new Hashmap<double>();
     dh->insert("abc", .1);
     dh->insert("acb", .2);
     dh->insert("bac", .3);
-    EXPECT_EQ(.2, dh->find("acb"));
-    EXPECT_EQ(.1, dh->find("abc"));
-    EXPECT_EQ(.3, dh->find("bac"));
+    EXPECT_EQ(.2, *(dh->find("acb")));
+    EXPECT_EQ(.1, *(dh->find("abc")));
+    EXPECT_EQ(.3, *(dh->find("bac")));
     dh->remove("acb");
-    EXPECT_EQ(.3, dh->find("bac"));
+    EXPECT_EQ(.3, *(dh->find("bac")));
     EXPECT_EQ(0, dh->find("acb"));
-    EXPECT_EQ(.1, dh->find("abc"));
+    EXPECT_EQ(.1, *(dh->find("abc")));
     delete dh;
 
     Hashmap<string>* sh = new Hashmap<string>();
     sh->insert("abc", "a");
     sh->insert("acb", "b");
     sh->insert("bac", "c");
-    //EXPECT_EQ("b", sh->find("acb"));
-    //EXPECT_EQ("a", sh->find("abc"));
-    //EXPECT_EQ("c", sh->find("bac"));
+    EXPECT_EQ("b", *(sh->find("acb")));
+    EXPECT_EQ("a", *(sh->find("abc")));
+    EXPECT_EQ("c", *(sh->find("bac")));
     sh->remove("acb");
-    //EXPECT_EQ("c", sh->find("bac"));
-    //EXPECT_EQ(0, sh->find("acb"));
-    //EXPECT_EQ("a", sh->find("abc"));
+    EXPECT_EQ("c", *(sh->find("bac")));
+    EXPECT_EQ(0, sh->find("acb"));
+    EXPECT_EQ("a", *(sh->find("abc")));
     delete sh;
 }
 
@@ -275,7 +296,7 @@ TEST(Hashtest, DuplicateInsert) {
     ih->insert("string", 1);
     ih->insert("string", 2);
     ih->insert("string", 3);
-    EXPECT_EQ(3, ih->find("string"));
+    EXPECT_EQ(3, *(ih->find("string")));
     ih->remove("string");
     EXPECT_EQ(0, ih->find("string"));
     delete ih;
@@ -284,17 +305,17 @@ TEST(Hashtest, DuplicateInsert) {
     dh->insert("string", .1);
     dh->insert("string", .2);
     dh->insert("string", .3);
-    //EXPECT_EQ(.3, dh->find("string"));
+    EXPECT_EQ(.3, *(dh->find("string")));
     dh->remove("string");
-    //EXPECT_EQ(0, dh->find("string"));
+    EXPECT_EQ(0, dh->find("string"));
     delete dh;
 
     Hashmap<string>* sh = new Hashmap<string>();
     sh->insert("string", "a");
     sh->insert("string", "b");
     sh->insert("string", "c");
-    //EXPECT_EQ("c" sh->find("string"));
+    EXPECT_EQ("c", *(sh->find("string")));
     sh->remove("string");
-    //EXPECT_EQ(0, sh->find("string"));
+    EXPECT_EQ(0, sh->find("string"));
     delete sh;
 }
