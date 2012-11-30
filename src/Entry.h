@@ -13,7 +13,7 @@ class Entry {
   public:
     Entry<V>(string k, V v);
     
-    V getValue();
+    V* getValue();
     string getKey();
     void setValue(V v);
 };

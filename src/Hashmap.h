@@ -18,7 +18,7 @@ class Hashmap {
     ~Hashmap<V>();
 
     void insert(string k, V v);
-    V find(string k);
+    V* find(string k);
     void remove(string k);
 };
 

@@ -9,8 +9,8 @@ Entry<V>::Entry(string k, V v) {
 }
 
 template <typename V>
-V Entry<V>::getValue() {
-    return value;
+V* Entry<V>::getValue() {
+    return &value;
 }
 
 template <typename V>

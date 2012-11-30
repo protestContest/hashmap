@@ -47,7 +47,7 @@ void Hashmap<V>::insert(string k, V v) {
 }
 
 template <typename V>
-V Hashmap<V>::find(string k) {
+V* Hashmap<V>::find(string k) {
     int keyHash = hash(k);
     assert(keyHash >= 0 && keyHash < 255);
 
