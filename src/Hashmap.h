@@ -11,7 +11,7 @@ template <typename V>
 class Hashmap {
   private:
     list< Entry<V>* >* table[255];
-    int hash(string k);
+    static int hash(string k);
     
   public:
     Hashmap<V>();
