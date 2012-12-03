@@ -12,6 +12,7 @@ CFLAGS = -Wall -Wextra -Werror -ggdb
 INCLUDE = -I$(SRC)
 
 hashtest: hashtest.o Hashmap.o Entry.o
+	mkdir -p build
 	$(CPP) $(CFLAGS) $(INCLUDE) -o $(BUILD)/hashtest -pthread \
 			hashtest.o Hashmap.o Entry.o $(GTEST_MAINA)
 
